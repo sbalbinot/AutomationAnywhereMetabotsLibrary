@@ -18,5 +18,13 @@ namespace Programming
 
             return string.Join(delimiter, text.Select(c => c.ToString()).ToArray());
         }
+
+        public bool IsStringUpperCase(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new ArgumentNullException("text");
+
+            return text == text.ToUpper();
+        }
     }
 }
