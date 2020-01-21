@@ -24,7 +24,15 @@ namespace Programming
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentNullException("text");
 
-            return text == text.ToUpper();
+            // Verifica se a string é númerica. Se sim, retorna false.
+            if (text.All(char.IsDigit))
+            {
+                return false;
+            }
+            else
+            {
+                return text == text.ToUpper();
+            }
         }
     }
 }
