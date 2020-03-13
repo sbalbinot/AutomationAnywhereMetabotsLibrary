@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Programming
 {
-    class Date
+    public class Date
     {
         public string AddDay(string date, string format, int number)
         {
