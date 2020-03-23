@@ -17,12 +17,12 @@ namespace System
             return Path.GetExtension(fileName);
         }
 
-        public string GetFileBetweenDates(string directory, string start, string end)
+        public string GetFileBetweenDates(string directory, string start, string end, string formato)
         {
             DirectoryInfo DirInfo = new DirectoryInfo(directory);
 
-            DateTime dateStart = DateTime.Parse(start);
-            DateTime dateEnd = DateTime.Parse(end);
+            DateTime dateStart = DateTime.ParseExact(start, formato, Globalization.CultureInfo.GetCultureInfo("pt-BR"));
+            DateTime dateEnd = DateTime.ParseExact(end, formato, Globalization.CultureInfo.GetCultureInfo("pt-BR"));
 
             FileInfo[] files = DirInfo.GetFiles().Where(f => f.LastWriteTime <= dateEnd && f.LastWriteTime >= dateStart).ToArray();
 
