@@ -10,10 +10,10 @@ namespace System
     {
         public static void Main()
         {
-            // File f = new File();
-            // string ff = f.GetFileBetweenDates(@"C:\DEV\Extratos", "23032020", "24032020", "ddMMyyyy");
-            // Console.WriteLine(ff);
-            // Console.ReadLine();
+            File f = new File();
+            string ff = f.GetFilesBetweenDates(@"C:\Users\Zdan\Desktop\PTUS A500", "24/03/2020 10:00:00", "26/03/2020 10:57:21", "dd/MM/yyyy HH:mm:ss", "false");
+            Console.WriteLine(ff);
+            Console.ReadLine();
         }
     }
 }
