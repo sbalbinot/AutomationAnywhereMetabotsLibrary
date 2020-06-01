@@ -11,13 +11,21 @@ namespace Programming
     {
         public static void Main()
         {
-            //JSON j = new JSON();
+            //XML x = new XML();
 
-            //string json = File.ReadAllText(@"C:\Users\Stephano\Downloads\OneDrive_1_5-5-2020\input.json");
+            //string xml = File.ReadAllText(@"C:\Users\Stephano\Desktop\resultado.xml");
 
-            //string xml = j.JsonToXml(json, "Data", "Row");
+            //string xmlResult = x.removeRootElement(xml);
 
-            //Console.WriteLine(xml);
+            //xmlResult = x.changeElementNameRoot(xmlResult, "Data");
+
+            //xmlResult = x.changeElementNameAndAddAttributeId(xmlResult, "guia", "Row", "ID");
+
+            //xmlResult = x.addChildElementAttributeId(xmlResult, "movimentos", "movimento", "ID");
+
+            //xmlResult = x.getNode(xmlResult, "Row", "ID", "2");
+
+            //Console.WriteLine(xmlResult);
             //Console.ReadLine();
         }
     }
