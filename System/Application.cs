@@ -92,6 +92,16 @@ namespace System
                 process.Close();
             }
         }
+
+        public void KillProcessByPID(string pid)
+        {
+            if (!int.TryParse(pid, out int result))
+                throw new ArgumentException("Argument not valid.", "pid");
+
+            var process = Process.GetProcessById(result);
+
+            process.Kill();
+        }
     }
 
     
