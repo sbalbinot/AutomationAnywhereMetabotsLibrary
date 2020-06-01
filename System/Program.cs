@@ -11,7 +11,9 @@ namespace System
         public static void Main()
         {
             //Application ap = new Application();
-            //ap.KillProcessByPID("22148");
+            //string s = ap.KillProcessByPID("22148");
+            //Console.WriteLine(s);
+            //Console.ReadLine();
         }
     }
 }

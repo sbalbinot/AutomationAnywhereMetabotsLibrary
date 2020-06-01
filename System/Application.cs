@@ -93,14 +93,33 @@ namespace System
             }
         }
 
-        public void KillProcessByPID(string pid)
+        public string KillProcessByPID(string pid)
         {
             if (!int.TryParse(pid, out int result))
-                throw new ArgumentException("Argument not valid.", "pid");
+                throw new ArgumentException("Parâmetro inválido.", "pid");
 
-            var process = Process.GetProcessById(result);
+            Process process;
 
-            process.Kill();
+            try
+            {
+                process = Process.GetProcessById(result);
+            } 
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            try
+            {
+                process.Kill();
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+
+            return "Processo interrompido com sucesso.";
         }
     }
 
