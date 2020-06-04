@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 
 namespace Programming
@@ -91,6 +92,11 @@ namespace Programming
             }
 
             return doc.ToString();
+        }
+
+        public void saveStringToXmlFileUtf8(string xmlString, string xmlFile)
+        {
+            File.WriteAllText(xmlFile, xmlString, Encoding.UTF8);
         }
     }
 }

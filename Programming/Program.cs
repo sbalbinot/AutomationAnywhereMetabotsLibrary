@@ -23,7 +23,7 @@ namespace Programming
 
             //xmlResult = x.addChildElementAttributeId(xmlResult, "movimentos", "movimento", "ID");
 
-            //xmlResult = x.getNode(xmlResult, "Row", "ID", "2");
+            //xmlResult = x.getNodeByAttribute(xmlResult, "Row", "ID", "1");
 
             //Console.WriteLine(xmlResult);
             //Console.ReadLine();
