@@ -98,5 +98,13 @@ namespace Programming
         {
             File.WriteAllText(xmlFile, xmlString, Encoding.UTF8);
         }
+
+        public string findParentNodeByChildValueIncludes(string xml, string childAttributeName, string value) {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement result = (from xml2 in doc.Descendants() where xml2.Name == childAttributeName && xml2.Value.Contains(value) select xml2).FirstOrDefault();
+
+            return result == null ? "Nenhum resultado encontrado" : result.Parent.ToString();
+        }
     }
 }
