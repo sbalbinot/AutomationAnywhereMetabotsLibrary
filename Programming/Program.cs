@@ -11,21 +11,15 @@ namespace Programming
     {
         public static void Main()
         {
-            //XML x = new XML();
+            //Date d = new Date();
 
-            //string xml = File.ReadAllText(@"C:\Users\Stephano\Desktop\resultado.xml");
+            //string s;
 
-            //string xmlResult = x.removeRootElement(xml);
+            //int i;
 
-            //xmlResult = x.changeElementNameRoot(xmlResult, "Data");
+            //i = d.GetYear("23/12/2020", "dd/mm/yyyy");
 
-            //xmlResult = x.changeElementNameAndAddAttributeId(xmlResult, "guia", "Row", "ID");
-
-            //xmlResult = x.addChildElementAttributeId(xmlResult, "movimentos", "movimento", "ID");
-
-            //xmlResult = x.getNodeByAttribute(xmlResult, "Row", "ID", "1");
-
-            //Console.WriteLine(xmlResult);
+            //Console.WriteLine(i);
             //Console.ReadLine();
         }
     }

@@ -11,46 +11,46 @@ namespace Programming
     {
         public string AddDay(string date, string format, int number)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
 
             newDate.AddDays(number);
 
-            return newDate.ToString(format);
+            return newDate.ToString();
         }
 
         public string AddMonth(string date, string format, int number)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
 
             newDate.AddDays(number);
 
-            return newDate.ToString(format);
+            return newDate.ToString();
         }
 
         public string AddYear(string date, string format, int number)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
 
             newDate.AddDays(number);
 
-            return newDate.ToString(format);
+            return newDate.ToString();
         }
 
-        public int GetDay(string date)
+        public int GetDay(string date, string format)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
             return newDate.Day;
         }
 
-        public int GetMonth(string date)
+        public int GetMonth(string date, string format)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
             return newDate.Month;
         }
 
-        public int GetYear(string date)
+        public int GetYear(string date, string format)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
             return newDate.Year;
         }
 
@@ -59,35 +59,47 @@ namespace Programming
             return DateTime.Now.ToString(format);
         }
 
-        public int GetLastDayOfMonth(string date)
+        public int GetLastDayOfMonth(string date, string format)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
             return DateTime.DaysInMonth(newDate.Year, newDate.Month);
         }
 
         public string GetFirstDayOfMonthAsDate(string date, string format)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
             newDate = new DateTime(newDate.Year, newDate.Month, 1);
-            return newDate.ToString(format);
+            return newDate.ToString();
         }
 
         public string GetLastDayOfMonthAsDate(string date, string format)
         {
-            DateTime newDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
             int lastDay = DateTime.DaysInMonth(newDate.Year, newDate.Month);
             newDate = new DateTime(newDate.Year, newDate.Month, lastDay);
-            return newDate.ToString(format);
+            return newDate.ToString();
         }
 
-        public int GetDaysBetweenDates(string start, string end)
+        public int GetDaysBetweenDates(string start, string end, string format)
         {
-            DateTime startDate = DateTime.Parse(start, CultureInfo.InvariantCulture);
-            DateTime endDate = DateTime.Parse(end, CultureInfo.InvariantCulture);
+            DateTime startDate = DateTime.ParseExact(start, format, CultureInfo.InvariantCulture);
+            DateTime endDate = DateTime.ParseExact(end, format, CultureInfo.InvariantCulture);
 
             TimeSpan difference = endDate - startDate;
 
             return difference.Days;
+        }
+
+        public int CalculateAge(string birthDate, string format)
+        {
+            DateTime today = DateTime.Today;
+            DateTime birth = DateTime.ParseExact(birthDate, format, CultureInfo.InvariantCulture);
+
+            int age = today.Year - birth.Year;
+
+            if (birth.Date > today.AddYears(-age)) age--;
+
+            return age;
         }
     }
 }
