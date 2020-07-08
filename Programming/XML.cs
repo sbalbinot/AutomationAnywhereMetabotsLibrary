@@ -106,5 +106,16 @@ namespace Programming
 
             return result == null ? "Nenhum resultado encontrado" : result.Parent.ToString();
         }
+
+        public string fileFindParentNodeByChildValueIncludes(string xmlFile, string childAttributeName, string value)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement result = (from xml2 in doc.Descendants() where xml2.Name == childAttributeName && xml2.Value.Contains(value) select xml2).FirstOrDefault();
+
+            return result == null ? "Nenhum resultado encontrado" : result.Parent.ToString();
+        }
     }
 }
