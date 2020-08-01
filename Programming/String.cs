@@ -34,5 +34,10 @@ namespace Programming
                 return text == text.ToUpper();
             }
         }
+
+        public bool StringStartsWith(string text, string valor)
+        {
+            return text.StartsWith(valor);
+        }
     }
 }
