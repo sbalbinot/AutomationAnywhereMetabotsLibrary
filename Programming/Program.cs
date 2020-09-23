@@ -21,6 +21,10 @@ namespace Programming
 
             //Console.WriteLine(i);
             //Console.ReadLine();
+            //Number n = new Number();
+            //string ret = n.SumDecimal("50,00", "-6.818,15");
+            //Console.WriteLine(ret);
+            //Console.ReadLine();
         }
     }
 }

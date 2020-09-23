@@ -10,5 +10,10 @@ namespace Programming
 
             return System.String.Format(CultureInfo.CurrentCulture, format, difference);
         }
+
+        public string SumDecimal(string decimal1, string decimal2)
+        {
+            return decimal.Add(decimal.Parse(decimal1), decimal.Parse(decimal2)).ToString();
+        }
     }
 }
