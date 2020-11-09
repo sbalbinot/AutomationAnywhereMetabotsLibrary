@@ -101,5 +101,22 @@ namespace Programming
 
             return age;
         }
+
+        public double DiffTotalHours(string start, string end, string format)
+        {
+            DateTime startDate = DateTime.ParseExact(start, format, CultureInfo.InvariantCulture);
+            DateTime endDate = DateTime.ParseExact(end, format, CultureInfo.InvariantCulture);
+
+            TimeSpan difference = endDate - startDate;
+
+            return difference.TotalHours;
+        }
+
+        public string formatDate(string date, string format)
+        {
+            DateTime startDate = DateTime.Parse(date);
+
+            return startDate.ToString(format);
+        }
     }
 }

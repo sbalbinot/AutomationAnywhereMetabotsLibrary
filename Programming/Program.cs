@@ -13,6 +13,13 @@ namespace Programming
         {
             //Date d = new Date();
 
+            //string date = d.formatDate("2020-11-09 16:06:36", "dd/MM/yyyy HH:mm:ss");
+            //Console.WriteLine(date);
+
+            //double hours = d.DiffTotalHours(date, "09/11/2020 16:17:12", "dd/MM/yyyy HH:mm:ss");
+            //Console.WriteLine(hours);
+            //Console.Read();
+
             //string s;
 
             //int i;
