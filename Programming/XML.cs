@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml.XPath;
 
 namespace Programming
 {
@@ -116,6 +117,22 @@ namespace Programming
             XElement result = (from xml2 in doc.Descendants() where xml2.Name == childAttributeName && xml2.Value.Contains(value) select xml2).FirstOrDefault();
 
             return result == null ? "Nenhum resultado encontrado" : result.Parent.ToString();
+        }
+
+        public string fileFindAllXPathValues(string xmlFile, string xpath)
+        {
+            string retorno = "";
+
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            foreach (XElement x in doc.XPathSelectElements(xpath).ToList())
+            {
+                retorno = retorno.Length == 0 ? x.Value.ToString() : retorno + "|" + x.Value.ToString();
+            }
+
+            return retorno;
         }
     }
 }
