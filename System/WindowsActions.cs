@@ -17,6 +17,9 @@ namespace System
         private delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
 
         [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool IsWindowVisible(IntPtr hWnd);
 
@@ -44,8 +47,8 @@ namespace System
         [DllImport("user32.dll")]
         public static extern int GetWindowTextLength(int hWnd);
 
-        [DllImport("user32.dll")]
-        public static extern int FindWindow(String text, String class_name);
+        //[DllImport("user32.dll")]
+        //public static extern int FindWindow(String text, String class_name);
 
         [DllImport("user32.dll")]
         public static extern int FindWindowEx(int parent, int start, String class_name);
@@ -66,6 +69,15 @@ namespace System
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, int wParam, StringBuilder lParam);
+
+        [DllImport("User32.dll")]
+        public static extern int GetWindowLong(IntPtr hWnd, int index);
+        [DllImport("User32.dll")]
+        public static extern IntPtr SendDlgItemMessage(IntPtr hWnd, int IDDlgItem, int uMsg, int nMaxCount, StringBuilder lpString);
+        [DllImport("User32.dll")]
+        public static extern IntPtr GetParent(IntPtr hWnd);
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern int GetWindowTextLength(IntPtr hWnd);
 
         public delegate bool Win32Callback(IntPtr hwnd, IntPtr lParam);
 
@@ -188,11 +200,13 @@ namespace System
             }
         }
 
-        public void HandleWarningWindow(string button, string pid, int timeout)
+        public void HandlePopupWindow(string button, string pid, int timeout, string defaultButton, string popupName)
         {
             //Declaração de variáveis
             StringBuilder message = new StringBuilder(255);
             string windowName = null;
+            //Console.WriteLine("Default Button: \"" + defaultButton + "\"");
+            //Console.WriteLine("");
             IEnumerable<IntPtr> windowHandles = null;
             IntPtr hwndChild = IntPtr.Zero;
             Process process = null;
@@ -213,9 +227,9 @@ namespace System
             //else
             //    listButtons.Add(button);
 
-            foreach(string b in button.Split(';'))
+            foreach(string b in button.Split('|'))
             {
-                buttons.Add(new Button(b, 0));
+                buttons.Add(new Button(b, 0, ""));
             }
 
             try
@@ -232,6 +246,7 @@ namespace System
             while (warningExists)
             {
                 warningFound = false;
+
                 //Busca todos WindowHandles do processo
                 windowHandles = EnumerateProcessWindowHandles(process);
 
@@ -252,11 +267,29 @@ namespace System
                         continue;
                     else
                     {
+                        //Coloca o nome da janela em UPPER CASE
                         windowName = message.ToString().ToUpper();
+
+                        //Ignora os acentos no nome para comparação
                         windowName = RemoveAccents(windowName);
 
-                        if (windowName.Contains("ATENCAO"))
+                        //Remove acentos e põe em UPPER CASE o nome da popup recebido como parâmetro
+                        popupName = RemoveAccents(popupName);
+                        popupName = popupName.ToUpper();
+
+                        //Após encontrar a janela de Atenção
+                        if (windowName.Contains(popupName))//ATENCAO
                         {
+                            //Console.WriteLine("Window Name: " + windowName);
+                            //Itera sobre os handles filhos com classe "Static" até que tenha um com tamanho diferente de zero, para identificar a mensagem do popup.
+                            IntPtr handleInnterText = IntPtr.Zero;
+                            int len = BuscarInnterText(handle, ref handleInnterText);
+
+                            //Busca o texto do handle filho que contém o length maior que zero. (Mensagem da popup)
+                            StringBuilder windowInnerText = new StringBuilder(len + 1);
+                            GetWindowText(handleInnterText, windowInnerText, len + 1);
+                            //Console.WriteLine("Window Message: " + windowInnerText.ToString());
+
                             warningFound = true;
                             // Buscar botão na janela de atenção
                             Button btn = null;
@@ -264,14 +297,51 @@ namespace System
                             {
                                 btn = buttons.Where(b => b.Value == 0).First();
                                 hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", btn.Name);
-                            } catch (Exception)
-                            {
-                                hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "OK");
+                                //Caso tenha identificado o Handle zerado, tenta pesquisar ele com Underscore na primeira letra.
+                                if (hwndChild.ToString().Equals("0"))
+                                {
+                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "&" + btn.Name);
+                                }
+                                // Caso o handle ainda esteja zerado, clica no botão default.
+                                if (hwndChild.ToString().Equals("0"))
+                                {
+                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", defaultButton);
+                                    //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
+                                    btn.Value = 2;
+                                }
+                                else
+                                {
+                                    //Console.WriteLine("\"" + btn.Name + "\" Found!");
+                                    btn.Value = 1;
+                                }
                             }
-                            // Clicar no botão encontrado
-                            SendMessage(hwndChild, 0x00F5, message.Capacity, message);
+                            catch (Exception)
+                            {
+                                hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", defaultButton);
+                                //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
+                                btn.Value = 2;
+                            }
+
+                            //Buscar mensagem interna da janela
+                            btn.WindowMessage = windowInnerText.ToString();
+
+                            //Deixa a janela encontrada em primeiro plano.
+                            SetForegroundWindow(hwndChild);
+
+                            //Após colocar a janela em primeiro plano, aguarda 1 segundo antes de realizar o clique no botão.
+                            //System.Threading.Thread.Sleep(1000);
                             process.WaitForInputIdle(timeout);
-                            btn.Value = 1;
+
+                            //Envia o clique para o botão encontrado.
+                            IntPtr sendMessageReturn = SendMessage(hwndChild, 0x00F5, message.Capacity, message);
+
+                            process.WaitForInputIdle(timeout);
+
+                            //System.Threading.Thread.Sleep(3000);
+
+                            //Console.WriteLine("");
+                            //Console.WriteLine("");
+
                             break;
                         }
                     }
@@ -280,6 +350,27 @@ namespace System
                 if (!warningFound)
                     warningExists = false;
             }
+
+            String retorno = "";
+
+            foreach (Button btn in buttons)
+            {
+                if (!btn.WindowMessage.Equals(""))
+                    retorno = retorno.Length == 0 ? btn.toString() : retorno + "|" + btn.toString();
+            }
+
+            Console.Write("return:" + retorno);
+        }
+
+        private static int BuscarInnterText(IntPtr handle, ref IntPtr innerTextHandle)
+        {
+            int len;
+            do
+            {
+                innerTextHandle = FindWindowEx(handle, innerTextHandle, "Static", null);
+                len = GetWindowTextLength(innerTextHandle);
+            } while (len == 0 && innerTextHandle != IntPtr.Zero);
+            return len;
         }
 
         private static IEnumerable<IntPtr> EnumerateProcessWindowHandles(Process process)
@@ -404,19 +495,22 @@ namespace System
         {
             string name;
             int value;
+            string windowMessage;
 
-            public Button(string name, int value)
+            public Button(string name, int value, string windowMessage)
             {
                 this.name = name;
                 this.value = value;
+                this.windowMessage = windowMessage;
             }
 
             public string Name { get => name; set => name = value; }
             public int Value { get => value; set => this.value = value; }
+            public string WindowMessage { get => windowMessage; set => this.windowMessage = value; }
 
             public string toString()
             {
-                return "Name: " + this.name + ", Value: " + value.ToString();
+                return windowMessage.ToString();
             }
         }
     }

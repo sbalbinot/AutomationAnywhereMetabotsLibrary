@@ -29,6 +29,26 @@ namespace Programming
             return result.ToString();
         }
 
+        public string getValueByNode(string xml, string node)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement result = (from xml2 in doc.Descendants() where xml2.Name == node select xml2).FirstOrDefault();
+
+            return result.Value.ToString();
+        }
+
+        public string fileGetValueByNode(string xmlFile, string node)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement result = (from xml2 in doc.Descendants() where xml2.Name == node select xml2).FirstOrDefault();
+
+            return result.Value.ToString();
+        }
+
         public string removeRootElement(string xml)
         {
             XDocument doc = XDocument.Parse(xml);
