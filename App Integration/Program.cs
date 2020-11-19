@@ -18,6 +18,11 @@ namespace App_Integration
             // ex.WriteRange(@"C:\Users\stephano.balbinot\Desktop\input_data - Copy.xlsx", "Sheet1", "A1", true, data, ";", "|");
             // ex.WriteRange(@"C:\Users\stephano.balbinot\Desktop\input_data - Copy.xlsx", "Sheet1", "A4", false, data2, ";", "|");
             // ex.AppendRange(@"C:\Users\stephano.balbinot\Desktop\input_data - Copy.xlsx", "Sheet1", data2, ";", "|");
+
+            //Workbook wb = new Workbook();
+            //wb.RemoveDuplicatedRowsByColumnsValue("C:\\Users\\Zdan\\Desktop\\Guias 18.11.2020.csv", "Número da guia", "Tipo Guia", "Seriado", "Não possui senha");
+            //Console.WriteLine("End.");
+            //Console.Read();
         }
     }
 }

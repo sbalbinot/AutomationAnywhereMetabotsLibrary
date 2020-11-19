@@ -200,7 +200,7 @@ namespace System
             }
         }
 
-        public void HandlePopupWindow(string button, string pid, int timeout, string defaultButton, string popupName)
+        public string HandlePopupWindow(string button, string pid, int timeout, string defaultButton, string popupName)
         {
             //Declaração de variáveis
             StringBuilder message = new StringBuilder(255);
@@ -237,14 +237,19 @@ namespace System
                 //Busca o processo pelo ID
                 process = Process.GetProcessById(int.Parse(pid));
                 process.WaitForInputIdle(timeout);
+
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
+
+
             while (warningExists)
             {
+                System.Threading.Thread.Sleep(1000);
+
                 warningFound = false;
 
                 //Busca todos WindowHandles do processo
@@ -337,7 +342,7 @@ namespace System
 
                             process.WaitForInputIdle(timeout);
 
-                            //System.Threading.Thread.Sleep(3000);
+                            System.Threading.Thread.Sleep(4000);
 
                             //Console.WriteLine("");
                             //Console.WriteLine("");
@@ -359,7 +364,8 @@ namespace System
                     retorno = retorno.Length == 0 ? btn.toString() : retorno + "|" + btn.toString();
             }
 
-            Console.Write("return:" + retorno);
+            //Console.Write("return:" + retorno);
+            return retorno;
         }
 
         private static int BuscarInnterText(IntPtr handle, ref IntPtr innerTextHandle)
