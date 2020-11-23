@@ -152,7 +152,29 @@ namespace Programming
                 retorno = retorno.Length == 0 ? x.Value.ToString() : retorno + "|" + x.Value.ToString();
             }
 
-            return retorno;
+            return retorno == "" ? "Nenhum resultado encontrado" : retorno;
         }
+
+        //Retornar todos os movimentos que tenham o tipo = "P"
+        //public string fileFindAllXPathValuesConditional(string xmlFile, string xpath, string conditionalXPath, string conditionalValue)
+        //{
+        //    string retorno = "";
+
+        //    string xml = File.ReadAllText(xmlFile);
+
+        //    XDocument doc = XDocument.Parse(xml);
+
+        //    List<XElement> elements = doc.Descendants("")
+
+
+        //    XElement result = (from xml2 in doc.Descendants() where xml2.Name == node select xml2).FirstOrDefault();
+
+        //    foreach (XElement x in doc.XPathSelectElements(xpath).ToList())
+        //    {
+        //        retorno = retorno.Length == 0 ? x.Value.ToString() : retorno + "|" + x.Value.ToString();
+        //    }
+
+        //    return retorno;
+        //}
     }
 }

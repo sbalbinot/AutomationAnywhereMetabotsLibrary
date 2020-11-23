@@ -342,7 +342,7 @@ namespace System
 
                             process.WaitForInputIdle(timeout);
 
-                            System.Threading.Thread.Sleep(4000);
+                            System.Threading.Thread.Sleep(2000);
 
                             //Console.WriteLine("");
                             //Console.WriteLine("");

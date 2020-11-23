@@ -15,12 +15,13 @@ namespace Programming
             string xmlFile = "C:\\Users\\Zdan\\Desktop\\xmlTestStephano.xml";
             XML x = new XML();
             //string retorno = x.fileFindAllXPathValues("C:\\Users\\Zdan\\Desktop\\xmlTestStephano.xml", "/ConsultaGuia/guias/guia/movimentos/movimento/cdMovimento");
-            string retorno = x.fileFindAllXPathValues(xmlFile, "/ConsultaGuia/guias/guia/movimentos/movimento/cdMovimento");
+            string retorno = x.fileFindAllXPathValues(xmlFile, "/ConsultaGuia/guias/guia/movimentos/movimento/cdMovimento[../tipo/text()='P']");
 
             Console.WriteLine(retorno);
+            Console.Read();
 
             //Busca o Parent Node que contiver o código do movimento passado como parâmetro (busca o node do movimento inteiro)
-            retorno = x.fileFindParentNodeByChildValueIncludes(xmlFile, "cdMovimento", "40202s550");
+            retorno = x.fileFindParentNodeByChildValueIncludes(xmlFile, "procBaixoRisco", "1");
 
             Console.WriteLine(retorno);
 
