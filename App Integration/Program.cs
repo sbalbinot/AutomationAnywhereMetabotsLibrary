@@ -21,7 +21,7 @@ namespace App_Integration
 
             //Workbook wb = new Workbook();
             //wb.RemoveDuplicatedRowsByColumnsValue("C:\\Users\\Zdan\\Desktop\\Guias 18.11.2020.csv", "Número da guia", "Tipo Guia", "Seriado", "Não possui senha");
-            //Console.WriteLine("End.");
+            //Console.WriteLine(wb.IsRowExists("C:\\Users\\Zdan\\Desktop\\Guias 18.11.2020.csv", "Artur Pavan;INSPETORIA SALESIANA SAO PIO X;13 anos;Feminino;57077286;Não possui senha;Seriado"));
             //Console.Read();
         }
     }

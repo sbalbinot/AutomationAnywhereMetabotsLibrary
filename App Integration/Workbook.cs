@@ -90,5 +90,26 @@ namespace App_Integration
             }
         }
 
+        public string IsRowExists(string workbookName, string row)
+        {
+            bool rowExists = false;
+
+            using (StreamReader reader = new StreamReader(workbookName))
+            {
+                var line = reader.ReadLine();
+                while (line != null)
+                {
+                    if (line.Equals(row))
+                    {
+                        rowExists = true;
+                        break;
+                    }
+                    line = reader.ReadLine();
+                }
+            }
+
+            return rowExists.ToString();
+        }
+
     }
 }
