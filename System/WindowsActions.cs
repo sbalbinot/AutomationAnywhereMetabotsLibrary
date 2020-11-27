@@ -433,7 +433,7 @@ namespace System
 
                     //Busca o título da janela
                     var task = Task.Run(() => SendMessage(handle, 0x000D, message.Capacity, message));
-                    if (!task.Wait(TimeSpan.FromSeconds(3)))
+                    if (!task.Wait(TimeSpan.FromSeconds(4)))
                     {
                         throw new Exception("A janela demorou demais para responder.");
                     }
@@ -485,6 +485,13 @@ namespace System
                                     //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
                                     btn.Value = 2;
                                 }
+                                // Caso o handle ainda esteja zerado, clica no botão default com Underscore na primeira letra.
+                                if (hwndChild.ToString().Equals("0"))
+                                {
+                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "&" + defaultButton);
+                                    //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
+                                    btn.Value = 2;
+                                }
                                 else
                                 {
                                     //Console.WriteLine("\"" + btn.Name + "\" Found!");
@@ -493,13 +500,21 @@ namespace System
                             }
                             catch (Exception)
                             {
-                                hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", defaultButton);
+                                try
+                                {
+                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", defaultButton);
+                                } catch (Exception)
+                                {
+                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "&" + defaultButton);
+                                }
                                 //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
-                                btn.Value = 2;
+                                if (btn != null)
+                                    btn.Value = 2;
                             }
 
                             //Buscar mensagem interna da janela
-                            btn.WindowMessage = windowInnerText.ToString();
+                            if (btn != null)
+                                btn.WindowMessage = windowInnerText.ToString();
 
                             //Deixa a janela encontrada em primeiro plano.
                             SetForegroundWindow(hwndChild);
