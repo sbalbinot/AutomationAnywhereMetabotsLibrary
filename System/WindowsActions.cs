@@ -483,38 +483,36 @@ namespace System
                                 {
                                     hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", defaultButton);
                                     //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
+                                    if (hwndChild.ToString().Equals("0"))
+                                    {
+                                        hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "&" + defaultButton);
+                                        //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
+                                    }
+
                                     btn.Value = 2;
                                 }
                                 // Caso o handle ainda esteja zerado, clica no botão default com Underscore na primeira letra.
-                                if (hwndChild.ToString().Equals("0"))
-                                {
-                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "&" + defaultButton);
-                                    //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
-                                    btn.Value = 2;
-                                }
                                 else
                                 {
                                     //Console.WriteLine("\"" + btn.Name + "\" Found!");
                                     btn.Value = 1;
                                 }
                             }
-                            catch (Exception)
+                            catch (Exception ex)
                             {
-                                try
-                                {
-                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", defaultButton);
-                                } catch (Exception)
-                                {
-                                    hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", "&" + defaultButton);
-                                }
-                                //Console.WriteLine("Button \"" + btn.Name + "\" Not Found - clicking default.");
-                                if (btn != null)
-                                    btn.Value = 2;
+
+                                // Get stack trace for the exception with source file information
+                                var st = new StackTrace(ex, true);
+                                // Get the top stack frame
+                                var frame = st.GetFrame(0);
+                                // Get the line number from the stack frame
+                                var line = frame.GetFileLineNumber();
+
+                                throw new Exception("Janela de atenção não mapeada. " + "Descrição do erro: " + ex.Message.Replace(Environment.NewLine, "") + " Linha do erro: " + line);
                             }
 
                             //Buscar mensagem interna da janela
-                            if (btn != null)
-                                btn.WindowMessage = windowInnerText.ToString();
+                            btn.WindowMessage = windowInnerText.ToString();
 
                             //Deixa a janela encontrada em primeiro plano.
                             SetForegroundWindow(hwndChild);
