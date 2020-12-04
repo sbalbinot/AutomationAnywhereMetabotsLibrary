@@ -11,29 +11,23 @@ namespace Programming
     {
         public string AddDay(string date, string format, int number)
         {
-            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.Parse(date);
 
-            newDate.AddDays(number);
-
-            return newDate.ToString();
+            return newDate.AddDays(number).ToString(format);
         }
 
         public string AddMonth(string date, string format, int number)
         {
-            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.Parse(date);
 
-            newDate.AddDays(number);
-
-            return newDate.ToString();
+            return newDate.AddMonths(number).ToString(format);
         }
 
         public string AddYear(string date, string format, int number)
         {
-            DateTime newDate = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+            DateTime newDate = DateTime.Parse(date);
 
-            newDate.AddDays(number);
-
-            return newDate.ToString();
+            return newDate.AddYears(number).ToString(format);
         }
 
         public int GetDay(string date, string format)

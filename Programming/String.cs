@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace Programming
 {
     public class String
     {
-        public string AddDelimiterBetweenStringCharacters (string text, string delimiter)
+        public string AddDelimiterBetweenStringCharacters(string text, string delimiter)
         {
             if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentNullException("text");
@@ -38,6 +39,18 @@ namespace Programming
         public bool StringStartsWith(string text, string valor)
         {
             return text.StartsWith(valor);
+        }
+
+        public string normalizeString(string text)
+        {
+            StringBuilder sbReturn = new StringBuilder();
+            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
+            foreach (char letter in arrayText)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                    sbReturn.Append(letter);
+            }
+            return sbReturn.Replace("\n", "").Replace("\r", "").ToString().ToUpper();
         }
     }
 }
