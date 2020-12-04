@@ -155,6 +155,24 @@ namespace Programming
             return retorno == "" ? "Nenhum resultado encontrado" : retorno;
         }
 
+        public string fileGetXPathAttributeValue(string xmlFile, string xpath, string attributeName)
+        {
+            string retorno = "";
+
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement x = doc.XPathSelectElements(xpath).FirstOrDefault();
+
+            if (x == null)
+                return "Nenhum resultado encontrado";
+
+            retorno = x.Attribute(attributeName) == null ? "" : x.Attribute(attributeName).Value.ToString();
+
+            return retorno == "" ? "Nenhum resultado encontrado" : retorno;
+        }
+
         //Retornar todos os movimentos que tenham o tipo = "P"
         //public string fileFindAllXPathValuesConditional(string xmlFile, string xpath, string conditionalXPath, string conditionalValue)
         //{
