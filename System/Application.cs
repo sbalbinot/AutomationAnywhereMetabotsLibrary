@@ -6,9 +6,6 @@ namespace System
 {
     public class Application
     {
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
-
         public string OpenApplication(string fileName, string arguments, int timeout)
         {
             if (string.IsNullOrWhiteSpace(fileName))
@@ -100,49 +97,6 @@ namespace System
             var process = Process.GetProcessById(result);
 
             process.Kill();
-        }
-
-        public void ProcessWaitForInputIdle(string pid, int timeout)
-        {
-            Process process;
-            int tid;
-            uint handlePid;
-
-            try
-            {
-                //Busca o processo pelo ID
-                process = Process.GetProcessById(int.Parse(pid));
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Não foi possível buscar o processo pelo pid.", ex);
-            }
-
-            tid = (int)GetWindowThreadProcessId(process.MainWindowHandle, out handlePid);
-            if (tid == 0)
-                throw new ArgumentException("Janela principal do processo não encontrada.");
-
-            if (!WaitForInputIdle(Int32.Parse(pid), tid, timeout))
-                throw new Exception("Processo demorou demais para responder.");            
-        }
-
-        private static bool WaitForInputIdle(int pid, int tid, int timeout = 0)
-        {
-            var tick = Environment.TickCount;
-            do
-            {
-                if (IsThreadIdle((int)pid, tid)) return true;
-                System.Threading.Thread.Sleep(15);
-            } while (timeout > 0 && Environment.TickCount - tick < timeout);
-            return false;
-        }
-
-        private static bool IsThreadIdle(int pid, int tid)
-        {
-            Process prc = System.Diagnostics.Process.GetProcessById(pid);
-            var thr = prc.Threads.Cast<ProcessThread>().First((t) => tid == t.Id);
-            return thr.ThreadState == ThreadState.Wait &&
-                   thr.WaitReason == ThreadWaitReason.UserRequest;
         }
     }
 
