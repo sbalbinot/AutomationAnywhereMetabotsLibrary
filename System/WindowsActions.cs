@@ -161,7 +161,7 @@ namespace System
 
                 //Busca o título da janela
                 var task = Task.Run(() => SendMessage(handle, 0x000D, message.Capacity, message));
-                if (!task.Wait(TimeSpan.FromSeconds(3)))
+                if (!task.Wait(TimeSpan.FromMilliseconds(timeout)))
                 {
                     throw new Exception("A janela demorou demais para responder.");
                 }
@@ -262,7 +262,7 @@ namespace System
 
                     //Busca o título da janela
                     var task = Task.Run(() => SendMessage(handle, 0x000D, message.Capacity, message));
-                    if (!task.Wait(TimeSpan.FromSeconds(3)))
+                    if (!task.Wait(TimeSpan.FromMilliseconds(timeout)))
                     {
                         throw new Exception("A janela demorou demais para responder.");
                     }
@@ -433,7 +433,7 @@ namespace System
 
                     //Busca o título da janela
                     var task = Task.Run(() => SendMessage(handle, 0x000D, message.Capacity, message));
-                    if (!task.Wait(TimeSpan.FromSeconds(4)))
+                    if (!task.Wait(TimeSpan.FromMilliseconds(timeout)))
                     {
                         throw new Exception("A janela demorou demais para responder.");
                     }
