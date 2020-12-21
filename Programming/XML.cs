@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -73,7 +74,7 @@ namespace Programming
         {
             int count = 1;
 
-            XDocument doc = XDocument.Parse(xml);       
+            XDocument doc = XDocument.Parse(xml);
 
             IEnumerable<XElement> elements = doc.Root.Descendants(from);
 
@@ -171,6 +172,30 @@ namespace Programming
             retorno = x.Attribute(attributeName) == null ? "" : x.Attribute(attributeName).Value.ToString();
 
             return retorno == "" ? "Nenhum resultado encontrado" : retorno;
+        }
+
+        public void fileInsertNodeIntoParentWhereXPath(string xmlFile, string xpath, string node, string nodeValue)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement x = new XElement(node, nodeValue);
+
+            //Console.WriteLine(x.ToString());
+
+            IEnumerable<XElement> xElements = doc.XPathSelectElements(xpath);
+
+            foreach(XElement xElement in xElements)
+            {
+                //Console.WriteLine(xElement.ToString());
+
+                xElement.Parent.Add(x);
+
+                //Console.WriteLine(xElement.Parent.ToString());
+            }
+
+            doc.Save(xmlFile);
         }
 
         //Retornar todos os movimentos que tenham o tipo = "P"
