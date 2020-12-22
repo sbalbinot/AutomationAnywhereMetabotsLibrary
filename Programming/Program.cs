@@ -18,6 +18,9 @@ namespace Programming
 
             //x.fileInsertNodeIntoParentWhereXPath(xmlFile, xpath, "cdLocalAutorizacaoHerdado", "29");
 
+            //string s = x.ReadXMLFile(xmlFile);
+            //Console.WriteLine(s);
+
             //Console.Read();
         }
     }

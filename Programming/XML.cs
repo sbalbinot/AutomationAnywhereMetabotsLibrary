@@ -198,6 +198,11 @@ namespace Programming
             doc.Save(xmlFile);
         }
 
+        public string ReadXMLFile(string xmlFile)
+        {
+            return System.IO.File.ReadAllText(xmlFile);
+        }
+
         //Retornar todos os movimentos que tenham o tipo = "P"
         //public string fileFindAllXPathValuesConditional(string xmlFile, string xpath, string conditionalXPath, string conditionalValue)
         //{
