@@ -52,5 +52,19 @@ namespace Programming
             }
             return sbReturn.Replace("\n", "").Replace("\r", "").ToString().ToUpper();
         }
+
+        public bool checkDuplicatesOnList(string text, string delimiter, string ignore)
+        {
+            char d = char.Parse(delimiter);
+
+            List<string> list = text.Split(d).ToList();
+
+            bool dupes = list
+                .Where(item => item != null && !string.IsNullOrWhiteSpace(item) && !item.Equals(ignore))
+                .GroupBy(item => item)
+                .Any(g => g.Count() > 1);
+
+            return dupes;
+        }
     }
 }

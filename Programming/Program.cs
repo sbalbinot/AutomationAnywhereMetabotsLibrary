@@ -22,6 +22,12 @@ namespace Programming
             //Console.WriteLine(s);
 
             //Console.Read();
+
+            //String s = new String();
+
+            //bool duplicated = s.checkDuplicatesOnList("87903010|87903060|0|0||||0", "|", "0");
+            //Console.WriteLine(duplicated);
+            //Console.Read();
         }
     }
 }
