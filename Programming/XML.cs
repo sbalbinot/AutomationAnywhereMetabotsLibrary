@@ -156,6 +156,22 @@ namespace Programming
             return retorno == "" ? "Nenhum resultado encontrado" : retorno;
         }
 
+        public string fileFindAllXPathValuesSubstring(string xmlFile, string xpath, int startIndex, int length)
+        {
+            string retorno = "";
+
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            foreach (XElement x in doc.XPathSelectElements(xpath).ToList())
+            {
+                retorno = retorno.Length == 0 ? x.Value.ToString().Substring(startIndex, length) : retorno + "|" + x.Value.ToString().Substring(startIndex, length);
+            }
+
+            return retorno == "" ? "Nenhum resultado encontrado" : retorno;
+        }
+
         public string fileGetXPathAttributeValue(string xmlFile, string xpath, string attributeName)
         {
             string retorno = "";
