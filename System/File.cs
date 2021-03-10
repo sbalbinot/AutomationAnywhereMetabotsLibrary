@@ -135,6 +135,8 @@ namespace System
 
             PdfWriter.GetInstance(doc, new FileStream(fileNamePdf, FileMode.Create, FileAccess.Write, FileShare.None));
 
+            System.Threading.Thread.Sleep(5000);
+
             //Open the Document
 
             doc.Open();
