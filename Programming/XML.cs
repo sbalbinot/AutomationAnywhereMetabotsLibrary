@@ -61,6 +61,29 @@ namespace Programming
             return output.ToString();
         }
 
+        public string removeRootElementAttributes(string xml)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            doc.Root.RemoveAttributes();
+
+            return doc.ToString();
+        }
+
+        public string removeNodeAttributes(string xml, string node)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            IEnumerable<XElement> elements = doc.XPathSelectElements(node);
+
+            foreach (XElement element in elements)
+            {
+                element.RemoveAttributes();
+            }
+
+            return doc.ToString();
+        }
+
         public string changeElementNameRoot(string xml, string root)
         {
             XDocument doc = XDocument.Parse(xml);
@@ -210,6 +233,19 @@ namespace Programming
 
                 //Console.WriteLine(xElement.Parent.ToString());
             }
+
+            doc.Save(xmlFile);
+        }
+
+        public void fileInsertXMLStringIntoNode(string xmlString, string xmlFile, string node)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XDocument childDoc = XDocument.Parse(xmlString);
+
+            doc.XPathSelectElement(node).Add(childDoc.Root);
 
             doc.Save(xmlFile);
         }

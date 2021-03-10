@@ -11,18 +11,9 @@ namespace System
     {
         public static void Main()
         {
-            //WindowsActions wa = new WindowsActions();
-            //string pid = wa.ChangeWindowNameByTitle("Bing", "Bing Teste", 60000);
-            //string retorno = wa.HandlePopupWindow("MAOE|Sim|Não|", "21352", 5000, "Cancelar", "SAVE CHANGES");
-            //Thread.Sleep(5000);
-            //wa.ChangeWindowNameByProcessId("Bing", "Teste", pid, 60000);
-            //Console.WriteLine(retorno);
-            //Console.WriteLine("End.");
-            //Console.ReadLine();
+            //File file = new File();
 
-            //WindowsActions wa = new WindowsActions();
-            //wa.teste("ok");
-            //Console.Read();
+            //file.ConvertTxtToPdf(@"C:\Users\steph\Downloads\layout-202100255123.txt");
         }
     }
 }

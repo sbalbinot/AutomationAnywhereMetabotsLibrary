@@ -1,4 +1,6 @@
-﻿using System;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -111,6 +113,58 @@ namespace System
             }
 
             return returnFiles.Remove(0, 1);
+        }
+
+        public string ConvertTxtToPdf(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentNullException("fileName");
+
+            string fileNamePdf = fileName.Replace(".txt", ".pdf");
+
+
+            //Read the Data from Input File
+
+            StreamReader rdr = new StreamReader(fileName);
+
+            //Create a New instance on Document Class
+
+            Document doc = new Document();
+
+            //Create a New instance of PDFWriter Class for Output File
+
+            PdfWriter.GetInstance(doc, new FileStream(fileNamePdf, FileMode.Create, FileAccess.Write, FileShare.None));
+
+            //Open the Document
+
+            doc.Open();
+
+            //Add the content of Text File to PDF File
+
+            string ln;
+            string lastLn = null;
+
+            while ((ln = rdr.ReadLine()) != null)
+            {
+                Paragraph paragraph = new Paragraph();
+
+                if (lastLn == null || ln.Contains("=") || (!lastLn.All(char.IsWhiteSpace) && !ln.Contains(":")))
+                    paragraph.Alignment = 1;
+                else
+                    paragraph.Alignment = 0;
+
+                paragraph.Add(ln);
+
+                doc.Add(paragraph);
+
+                lastLn = ln;
+            } 
+
+            //Close the Document
+
+            doc.Close();
+
+            return fileNamePdf;
         }
     }
 }
