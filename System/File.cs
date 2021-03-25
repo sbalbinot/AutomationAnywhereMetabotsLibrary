@@ -19,6 +19,30 @@ namespace System
             return Path.GetExtension(fileName);
         }
 
+        public string GetMostRecentFileInAFolder(string folder, string extension)
+        {
+            if (string.IsNullOrWhiteSpace(folder))
+                throw new ArgumentNullException("folder");
+
+            DirectoryInfo directory = new DirectoryInfo(folder);
+
+            FileInfo file;
+
+            if (extension == null)
+            {
+                file = (from f in directory.GetFiles()
+                                 orderby f.LastWriteTime descending
+                                 select f).First();
+            } else
+            {
+                file = (from f in directory.GetFiles("*." + extension.ToLower() + "*")
+                                 orderby f.LastWriteTime descending
+                                 select f).First();
+            }
+
+            return file.FullName;
+        }
+
         public string GetFileBetweenDates(string directory, string start, string end, string formato)
         {
             DirectoryInfo DirInfo = new DirectoryInfo(directory);
