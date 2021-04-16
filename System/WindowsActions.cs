@@ -471,7 +471,11 @@ namespace System
                             Button btn = null;
                             try
                             {
-                                btn = buttons.Where(b => b.Value == 0).First();
+                                btn = buttons.Where(b => b.Value == 0).FirstOrDefault();
+
+                                if (btn == null)
+                                    break;
+
                                 hwndChild = FindWindowEx((IntPtr)handle, IntPtr.Zero, "Button", btn.Name);
                                 //Caso tenha identificado o Handle zerado, tenta pesquisar ele com Underscore na primeira letra.
                                 if (hwndChild.ToString().Equals("0"))
