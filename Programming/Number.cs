@@ -15,5 +15,17 @@ namespace Programming
         {
             return decimal.Add(decimal.Parse(decimal1), decimal.Parse(decimal2)).ToString();
         }
+
+        public string Format(double number, string format, string culture)
+        {
+            CultureInfo cultureInfo;
+
+            if (culture == null)
+                cultureInfo = CultureInfo.InvariantCulture;
+            else
+                cultureInfo = CultureInfo.GetCultureInfo(culture);
+
+            return string.Format(cultureInfo, format, number);
+        }
     }
 }

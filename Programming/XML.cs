@@ -21,6 +21,17 @@ namespace Programming
             return result.ToString();
         }
 
+        public void fileRemoveNode(string xmlFile, string node)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            element.Remove();
+        }
+
         public string getNodeByAttribute(string xml, string node, string attributeName, string identifierValue)
         {
             XDocument doc = XDocument.Parse(xml);
@@ -70,6 +81,45 @@ namespace Programming
             return doc.ToString();
         }
 
+        public string addNodeAttribute(string xml, string node, string attributeName, string attributeValue)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            XAttribute attribute = new XAttribute(attributeName, attributeValue);
+
+            element.Add(attribute);
+
+            return doc.ToString();
+        }
+
+        public string updateNodeAttribute(string xml, string node, string attributeName, string attributeValue)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            XAttribute attribute = element.Attribute(attributeName);
+
+            attribute.SetValue(attributeValue);
+
+            return doc.ToString();
+        }
+
+        public string removeNodeAttribute(string xml, string node, string attribute)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            XAttribute result = (from att in element.Attributes() where att.Name == attribute select att).FirstOrDefault();
+
+            result.Remove();
+
+            return doc.ToString();
+        }
+
         public string removeNodeAttributes(string xml, string node)
         {
             XDocument doc = XDocument.Parse(xml);
@@ -104,7 +154,6 @@ namespace Programming
             foreach (XElement element in elements)
             {
                 XAttribute attribute = new XAttribute(attributeName, count);
-
                 element.Name = to;
                 element.Add(attribute);
 
