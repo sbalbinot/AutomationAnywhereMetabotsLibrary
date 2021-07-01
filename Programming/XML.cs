@@ -94,6 +94,19 @@ namespace Programming
             return doc.ToString();
         }
 
+        public void addNodeAttributeFile(string xmlFile, string node, string attributeName, string attributeValue)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            XAttribute attribute = new XAttribute(attributeName, attributeValue);
+
+            element.Add(attribute);
+        }
+
         public string updateNodeAttribute(string xml, string node, string attributeName, string attributeValue)
         {
             XDocument doc = XDocument.Parse(xml);
@@ -107,6 +120,19 @@ namespace Programming
             return doc.ToString();
         }
 
+        public void updateNodeAttributeFile(string xmlFile, string node, string attributeName, string attributeValue)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            XAttribute attribute = element.Attribute(attributeName);
+
+            attribute.SetValue(attributeValue);
+        }
+
         public string removeNodeAttribute(string xml, string node, string attribute)
         {
             XDocument doc = XDocument.Parse(xml);
@@ -118,6 +144,19 @@ namespace Programming
             result.Remove();
 
             return doc.ToString();
+        }
+
+        public void removeNodeAttributeFile(string xmlFile, string node, string attribute)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(node);
+
+            XAttribute result = (from att in element.Attributes() where att.Name == attribute select att).FirstOrDefault();
+
+            result.Remove();
         }
 
         public string removeNodeAttributes(string xml, string node)
