@@ -30,6 +30,8 @@ namespace Programming
             XElement element = doc.XPathSelectElement(node);
 
             element.Remove();
+
+            File.WriteAllText(xmlFile, doc.ToString());
         }
 
         public string getNodeByAttribute(string xml, string node, string attributeName, string identifierValue)
@@ -105,6 +107,8 @@ namespace Programming
             XAttribute attribute = new XAttribute(attributeName, attributeValue);
 
             element.Add(attribute);
+
+            File.WriteAllText(xmlFile, doc.ToString());
         }
 
         public string updateNodeAttribute(string xml, string node, string attributeName, string attributeValue)
@@ -131,6 +135,8 @@ namespace Programming
             XAttribute attribute = element.Attribute(attributeName);
 
             attribute.SetValue(attributeValue);
+
+            File.WriteAllText(xmlFile, doc.ToString());
         }
 
         public string removeNodeAttribute(string xml, string node, string attribute)
@@ -157,6 +163,8 @@ namespace Programming
             XAttribute result = (from att in element.Attributes() where att.Name == attribute select att).FirstOrDefault();
 
             result.Remove();
+
+            File.WriteAllText(xmlFile, doc.ToString());
         }
 
         public string removeNodeAttributes(string xml, string node)
