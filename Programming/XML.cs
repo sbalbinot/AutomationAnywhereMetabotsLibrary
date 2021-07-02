@@ -309,6 +309,30 @@ namespace Programming
             return retorno == "" ? "Nenhum resultado encontrado" : retorno;
         }
 
+        public void fileInsertNodeWhereXPath(string xmlFile, string xpath, string node, string nodeValue)
+        {
+            string xml = File.ReadAllText(xmlFile);
+
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement x = new XElement(node, nodeValue);
+
+            //Console.WriteLine(x.ToString());
+
+            IEnumerable<XElement> xElements = doc.XPathSelectElements(xpath);
+
+            foreach (XElement xElement in xElements)
+            {
+                //Console.WriteLine(xElement.ToString());
+
+                xElement.Add(x);
+
+                //Console.WriteLine(xElement.Parent.ToString());
+            }
+
+            doc.Save(xmlFile);
+        }
+
         public void fileInsertNodeIntoParentWhereXPath(string xmlFile, string xpath, string node, string nodeValue)
         {
             string xml = File.ReadAllText(xmlFile);
