@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programming", "Programming\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App Integration", "App Integration\App Integration.csproj", "{6AE81593-E36B-4D82-9224-4FD5E5FC5FAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrosoftGraphAPI", "MicrosoftGraphAPI\MicrosoftGraphAPI.csproj", "{ACE2D91C-F74D-4F73-B5CE-BDDE216ADD37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6AE81593-E36B-4D82-9224-4FD5E5FC5FAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AE81593-E36B-4D82-9224-4FD5E5FC5FAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AE81593-E36B-4D82-9224-4FD5E5FC5FAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACE2D91C-F74D-4F73-B5CE-BDDE216ADD37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE2D91C-F74D-4F73-B5CE-BDDE216ADD37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE2D91C-F74D-4F73-B5CE-BDDE216ADD37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE2D91C-F74D-4F73-B5CE-BDDE216ADD37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
