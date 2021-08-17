@@ -171,6 +171,50 @@ namespace MicrosoftGraphAPI
             }
         }
 
+        public string teamsSendChannelMessageHtmlWithMentions(string configFile, string teamId, string channelId, string content, string mentionText, string mentionName)
+        {
+            try
+            {
+                string[] scopes = { "ChannelMessage.Send" };
+
+                GraphServiceClient client = GetGraphServiceClient(configFile, scopes);
+
+                var chatMessage = new ChatMessage
+                {
+                    Body = new ItemBody
+                    {
+                        ContentType = BodyType.Html,
+                        Content = "<at id =\"0\">" + mentionText + "</at>" + content
+                    },
+                    Mentions = new List<ChatMessageMention>()
+                    {
+                        new ChatMessageMention
+                        {
+                            Id = 0,
+                            MentionText = mentionText,
+                            Mentioned = new ChatMessageMentionedIdentitySet
+                            {
+                                Conversation = new TeamworkConversationIdentity
+                                {
+                                    DisplayName = mentionName,
+                                    Id = channelId,
+                                    ConversationIdentityType = TeamworkConversationIdentityType.Channel
+                                }
+                            }
+                        }
+                    }
+                };
+
+                chatMessage = client.Teams[teamId].Channels[channelId].Messages.Request().AddAsync(chatMessage).ConfigureAwait(true).GetAwaiter().GetResult();
+
+                return chatMessage.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocorreu um erro. " + "Descrição do erro: " + ex.ToString().Replace(Environment.NewLine, " "));
+            }
+        }
+
         public string teamsSendChannelMessageHtmlWithAttachments(string configFile, string teamId, string channelId, string content, string fileId, string fileName, string fileUrl)
         {
             try
@@ -185,6 +229,60 @@ namespace MicrosoftGraphAPI
                     {
                         ContentType = BodyType.Html,
                         Content = content + "<attachment id=\"" + fileId + "\"></attachment>"
+                    },
+                    Attachments = new List<ChatMessageAttachment>()
+                    {
+                        new ChatMessageAttachment
+                        {
+                            Id = fileId,
+                            ContentType = "reference",
+                            ContentUrl = fileUrl,
+                            Name = fileName
+                        }
+                    }
+                };
+
+                chatMessage = client.Teams[teamId].Channels[channelId].Messages.Request().AddAsync(chatMessage).ConfigureAwait(true).GetAwaiter().GetResult();
+
+                return chatMessage.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Ocorreu um erro. " + "Descrição do erro: " + ex.ToString().Replace(Environment.NewLine, " "));
+            }
+        }
+
+        public string teamsSendChannelMessageHtmlWithMentionsAndAttachments(string configFile, string teamId, string channelId, string content, string mentionText, string mentionName, string fileId, string fileName, string fileUrl)
+        {
+            try
+            {
+                string[] scopes = { "ChannelMessage.Send" };
+
+                GraphServiceClient client = GetGraphServiceClient(configFile, scopes);
+
+                var chatMessage = new ChatMessage
+                {
+                    Body = new ItemBody
+                    {
+                        ContentType = BodyType.Html,
+                        Content = "<at id =\"0\">" + mentionText + "</at>" + content + " <attachment id=\"" + fileId + "\"></attachment>"
+                    },
+                    Mentions = new List<ChatMessageMention>()
+                    {
+                        new ChatMessageMention
+                        {
+                            Id = 0,
+                            MentionText = mentionText,
+                            Mentioned = new ChatMessageMentionedIdentitySet
+                            {
+                                Conversation = new TeamworkConversationIdentity
+                                {
+                                    DisplayName = mentionName,
+                                    Id = channelId,
+                                    ConversationIdentityType = TeamworkConversationIdentityType.Channel
+                                }
+                            }
+                        }
                     },
                     Attachments = new List<ChatMessageAttachment>()
                     {
