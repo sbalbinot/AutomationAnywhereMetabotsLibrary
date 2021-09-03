@@ -11,6 +11,22 @@ namespace System
 {
     public class File
     {
+        public string GetFileName(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file))
+                throw new ArgumentNullException("file");
+
+            return Path.GetFileName(file);
+        }
+
+        public string GetFileNameWithoutExtension(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file))
+                throw new ArgumentNullException("file");
+
+            return Path.GetFileNameWithoutExtension(file);
+        }
+
         public string GetFileExtension(string fileName)
         {
             if (string.IsNullOrWhiteSpace(fileName))
