@@ -35,6 +35,14 @@ namespace System
             return Path.GetExtension(fileName);
         }
 
+        public string GetTextFileContent(string file)
+        {
+            if (string.IsNullOrWhiteSpace(file))
+                throw new ArgumentNullException("file");
+
+            return System.IO.File.ReadAllText(file);
+        }
+
         public string GetMostRecentFileInAFolder(string folder, string extension)
         {
             if (string.IsNullOrWhiteSpace(folder))
