@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Programming
 {
@@ -18,6 +18,13 @@ namespace Programming
                 throw new ArgumentNullException("delimiter");
 
             return string.Join(delimiter, text.Select(c => c.ToString()).ToArray());
+        }
+
+        public string CountTextOcurrences(string text, string textToCount)
+        {
+            int count = Regex.Matches(text, textToCount).Count;
+
+            return count.ToString();
         }
 
         public bool IsStringUpperCase(string text)
