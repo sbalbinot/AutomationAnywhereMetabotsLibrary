@@ -1,11 +1,8 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace System
 {
@@ -216,5 +213,23 @@ namespace System
 
             return fileNamePdf;
         }
+
+        public string DownloadFile(string url, string saveFileAs)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile(url, saveFileAs);
+                }
+
+                return "True";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
     }
 }
