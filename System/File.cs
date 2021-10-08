@@ -64,6 +64,61 @@ namespace System
             return file.FullName;
         }
 
+        public string GetMostRecentFilesInAFolder(string folder, string extension, int numberOfFiles)
+        {
+            if (string.IsNullOrWhiteSpace(folder))
+                throw new ArgumentNullException("folder");
+
+            DirectoryInfo directory = new DirectoryInfo(folder);
+
+            string files = "";
+
+            if (extension == null)
+            {
+                files = String.Join("|", (from f in directory.GetFiles()
+                        orderby f.LastWriteTime descending
+                        select f.FullName).Take(numberOfFiles).ToArray());
+            }
+            else
+            {
+                files = String.Join("|", (from f in directory.GetFiles("*." + extension.ToLower() + "*")
+                        orderby f.LastWriteTime descending
+                        select f.FullName).Take(numberOfFiles).ToArray());
+            }
+
+            return files;
+        }
+
+        public string GetMostRecentFileInAFolderThatContains(string folder, string extension, string contains)
+        {
+            if (string.IsNullOrWhiteSpace(folder))
+                throw new ArgumentNullException("folder");
+
+            if (string.IsNullOrWhiteSpace(contains))
+                throw new ArgumentNullException("contains");
+
+            DirectoryInfo directory = new DirectoryInfo(folder);
+
+            FileInfo file;
+
+            if (extension == null)
+            {
+                file = (from f in directory.GetFiles()
+                        where f.Name.Contains(contains)
+                        orderby f.LastWriteTime descending
+                        select f).First();
+            }
+            else
+            {
+                file = (from f in directory.GetFiles("*." + extension.ToLower() + "*")
+                        where f.Name.Contains(contains)
+                        orderby f.LastWriteTime descending
+                        select f).First();
+            }
+
+            return file.FullName;
+        }
+
         public string GetFileBetweenDates(string directory, string start, string end, string formato)
         {
             DirectoryInfo DirInfo = new DirectoryInfo(directory);
