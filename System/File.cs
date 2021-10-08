@@ -56,9 +56,38 @@ namespace System
                                  select f).First();
             } else
             {
-                file = (from f in directory.GetFiles("*." + extension.ToLower() + "*")
+                file = (from f in directory.GetFiles("*." + extension.ToLower())
                                  orderby f.LastWriteTime descending
                                  select f).First();
+            }
+
+            return file.FullName;
+        }
+        public string GetMostRecentFileInAFolderThatContains(string folder, string extension, string contains)
+        {
+            if (string.IsNullOrWhiteSpace(folder))
+                throw new ArgumentNullException("folder");
+
+            if (string.IsNullOrWhiteSpace(contains))
+                throw new ArgumentNullException("contains");
+
+            DirectoryInfo directory = new DirectoryInfo(folder);
+
+            FileInfo file;
+
+            if (extension == null)
+            {
+                file = (from f in directory.GetFiles()
+                        where f.Name.Contains(contains)
+                        orderby f.LastWriteTime descending
+                        select f).First();
+            }
+            else
+            {
+                file = (from f in directory.GetFiles("*." + extension.ToLower())
+                        where f.Name.Contains(contains)
+                        orderby f.LastWriteTime descending
+                        select f).First();
             }
 
             return file.FullName;
@@ -81,7 +110,7 @@ namespace System
             }
             else
             {
-                files = String.Join("|", (from f in directory.GetFiles("*." + extension.ToLower() + "*")
+                files = String.Join("|", (from f in directory.GetFiles("*." + extension.ToLower())
                         orderby f.LastWriteTime descending
                         select f.FullName).Take(numberOfFiles).ToArray());
             }
@@ -89,34 +118,31 @@ namespace System
             return files;
         }
 
-        public string GetMostRecentFileInAFolderThatContains(string folder, string extension, string contains)
+        public string GetMostRecentFilesInAFolderExcept(string folder, string extension, int numberOfFiles, string except)
         {
             if (string.IsNullOrWhiteSpace(folder))
                 throw new ArgumentNullException("folder");
 
-            if (string.IsNullOrWhiteSpace(contains))
-                throw new ArgumentNullException("contains");
-
             DirectoryInfo directory = new DirectoryInfo(folder);
 
-            FileInfo file;
+            string files = "";
 
             if (extension == null)
             {
-                file = (from f in directory.GetFiles()
-                        where f.Name.Contains(contains)
-                        orderby f.LastWriteTime descending
-                        select f).First();
+                files = String.Join("|", (from f in directory.GetFiles()
+                                          where !f.Name.Contains(except)
+                                          orderby f.LastWriteTime descending
+                                          select f.FullName).Take(numberOfFiles).ToArray());
             }
             else
             {
-                file = (from f in directory.GetFiles("*." + extension.ToLower() + "*")
-                        where f.Name.Contains(contains)
-                        orderby f.LastWriteTime descending
-                        select f).First();
+                files = String.Join("|", (from f in directory.GetFiles("*." + extension.ToLower())
+                                          where !f.Name.Contains(except)
+                                          orderby f.LastWriteTime descending
+                                          select f.FullName).Take(numberOfFiles).ToArray());
             }
 
-            return file.FullName;
+            return files;
         }
 
         public string GetFileBetweenDates(string directory, string start, string end, string formato)

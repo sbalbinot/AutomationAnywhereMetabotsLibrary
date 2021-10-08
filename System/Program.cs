@@ -13,7 +13,7 @@ namespace System
         {
             //File file = new File();
 
-            //Console.WriteLine(file.GetMostRecentFilesInAFolder(@"C:\Users\steph\Downloads", "aapkg", 5));
+            //Console.WriteLine(file.GetMostRecentFilesInAFolderExcept(@"C:\Users\steph\Downloads", "aapkg", 5, "Consultorio"));
             //Console.Read();
         }
     }
