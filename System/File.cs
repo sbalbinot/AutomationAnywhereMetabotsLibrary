@@ -145,6 +145,41 @@ namespace System
             return files;
         }
 
+        public static FileInfo GetNewestFile(DirectoryInfo directory)
+        {
+            return directory.GetFiles()
+                .Union(directory.GetDirectories().Select(d => GetNewestFile(d)))
+                .OrderByDescending(f => (f == null ? DateTime.MinValue : f.LastWriteTime))
+                .FirstOrDefault();
+        }
+
+        public string GetMostRecentFilesInAFolderRecursivelyExcept(string folder, string extension, int numberOfFiles, string except)
+        {
+            if (string.IsNullOrWhiteSpace(folder))
+                throw new ArgumentNullException("folder");
+
+            DirectoryInfo directory = new DirectoryInfo(folder);
+
+            string files = "";
+
+            if (extension == null)
+            {
+                files = String.Join("|", (from f in directory.GetFiles(null, SearchOption.AllDirectories)
+                                          where !f.Name.Contains(except)
+                                          orderby f.LastWriteTime descending
+                                          select f.FullName).Take(numberOfFiles).ToArray());
+            }
+            else
+            {
+                files = String.Join("|", (from f in directory.GetFiles("*." + extension.ToLower(), SearchOption.AllDirectories)
+                                          where !f.Name.Contains(except)
+                                          orderby f.LastWriteTime descending
+                                          select f.FullName).Take(numberOfFiles).ToArray());
+            }
+
+            return files;
+        }
+
         public string GetFileBetweenDates(string directory, string start, string end, string formato)
         {
             DirectoryInfo DirInfo = new DirectoryInfo(directory);
