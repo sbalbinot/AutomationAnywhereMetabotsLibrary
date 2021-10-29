@@ -10,7 +10,12 @@ namespace App_Integration
     {
         public static void Main()
         {
-            // Excel ex = new Excel();
+            //Excel ex = new Excel();
+
+            //string result = ex.FindRowInARangeByTwoExactValues(@"C:\Users\steph\Downloads\10 - Outubro 2021 - CONTROLE DE AGENDA E TX DE OCUPAÇAO.xlsx", "1", "B2:C78", "Unifacil Cachoeirinha", "Medico Ginecologista e Obstetra");
+            //string result = ex.GetCellValue(@"C:\Users\steph\Downloads\10 - Outubro 2021 - CONTROLE DE AGENDA E TX DE OCUPAÇAO.xlsx", "1", "H12");
+            //Console.WriteLine(result);
+            //Console.Read();
 
             // string data = "Codigo;Nome;E-mail;Telefone|21453;João Alves;joao@iprocess.com.br;51995532712|31231;Pedro Silva;pedro@iprocess.com.br;51995672721";
             // string data2 = "Codigo;Nome;E-mail;Telefone|43536;Carolina Santana;carolina@iprocess.com.br;51995572467|75423;Geraldo Filho;geraldo@iprocess.com.br;51983132134";

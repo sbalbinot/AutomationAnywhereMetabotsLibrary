@@ -1,6 +1,8 @@
 ﻿using ClosedXML.Excel;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 
 namespace App_Integration
@@ -132,14 +134,78 @@ namespace App_Integration
             wb.Save();
         }
 
-        public void WriteCell(string workbookName, string sheetName, string range, string value)
+        public string FindCellsInARangeByExactValue(string workbookName, string sheetName, string range, string value)
         {
             if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
 
             var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
             var ws = wb.Worksheet(sheetName);
 
-            ws.Ranges(range).SetValue(value);
+            string result = "";
+
+            IXLRange rangeFound = ws.Range(range);
+            
+            IXLCells cellsFound = rangeFound.CellsUsed(cell => cell.GetValue<string>() == value);
+
+            result = String.Join(";", from a in cellsFound.ToArray() select a.Address.ToString());
+
+            return result;
+        }
+
+        public string FindRowInARangeByTwoExactValues(string workbookName, string sheetName, string range, string value1, string value2)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            string result = "";
+
+
+            IXLRange rangeFound = ws.Range(range);
+            Console.WriteLine(rangeFound.RowsUsed().Count().ToString());
+            IEnumerable<IXLRangeRow> rowsFound = rangeFound.RowsUsed().Where(row => row.Cells().Any(cell => cell.GetString() == value1) && row.Cells().Any(cell => cell.GetString() == value2));
+
+            result = String.Join(";", from a in rowsFound select a.RowNumber().ToString());
+
+            return result;
+        }
+
+        public string GetCellValue(string workbookName, string sheetName, string cell)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            return ws.Cell(cell).Value.ToString();
+        }
+
+        public void WriteCell(string workbookName, string sheetName, string range, string value, string format)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            if (format == null || format.ToUpper() == "TEXT")
+            {
+                ws.Ranges(range).SetValue(value).SetDataType(XLDataType.Text);
+            }
+            else if (format.ToUpper() == "NUMBER")
+            {
+                decimal formattedValue = Decimal.Parse(value, CultureInfo.GetCultureInfo("pt-BR"));
+                ws.Ranges(range).SetValue(formattedValue).SetDataType(XLDataType.Number);
+            }
+            else if (format.ToUpper() == "DATETIME")
+            {
+                DateTime formattedValue = DateTime.Parse(value, CultureInfo.GetCultureInfo("pt-BR"));
+                ws.Ranges(range).SetValue(formattedValue).SetDataType(XLDataType.DateTime);
+            }
+            else
+            {
+                throw new Exception("Formato inválido.");
+            }
 
             wb.Save();
         }
