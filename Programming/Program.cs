@@ -13,7 +13,7 @@ namespace Programming
         public static void Main()
         {
             //XML x = new XML();
-            //x.updateNodeAttributeFile(@"C:\Users\steph\OneDrive\Área de Trabalho\TransactionQueue.xml", "/Queue/Row[@POSITION=3]", "POSITION", "2");
+            //Console.WriteLine(s);
             //Console.Read();
             //Number n = new Number();
             //string number = n.Format(5000, "{0:#,0.00}", null);

@@ -43,6 +43,15 @@ namespace Programming
             return result.ToString();
         }
 
+        public string getFirstNodeAttributeValueBeforeXPath(string xml, string xpath, string attributeName)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(xpath).ElementsBeforeSelf().FirstOrDefault();
+
+            return element.Attribute(attributeName).Value;
+        }
+
         public string getValueByNode(string xml, string node)
         {
             XDocument doc = XDocument.Parse(xml);
