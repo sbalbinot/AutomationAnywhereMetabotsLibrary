@@ -43,6 +43,15 @@ namespace Programming
             return result.ToString();
         }
 
+        public string getNodeAttributeValueByXPath(string xml, string xpath, string attributeName)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(xpath);
+
+            return element.Attribute(attributeName).Value;
+        }
+
         public string getFirstNodeAttributeValueBeforeXPath(string xml, string xpath, string attributeName)
         {
             XDocument doc = XDocument.Parse(xml);
@@ -51,6 +60,16 @@ namespace Programming
 
             return element.Attribute(attributeName).Value;
         }
+
+        public string getFirstNodeValueAfterXPath(string xml, string xpath)
+        {
+            XDocument doc = XDocument.Parse(xml);
+
+            XElement element = doc.XPathSelectElement(xpath).ElementsAfterSelf().FirstOrDefault();
+
+            return element.Value;
+        }
+
 
         public string getValueByNode(string xml, string node)
         {
@@ -334,7 +353,8 @@ namespace Programming
             {
                 //Console.WriteLine(xElement.ToString());
 
-                xElement.Add(x);
+                if(xElement.Element(x.Name) == null)
+                    xElement.Add(x);
 
                 //Console.WriteLine(xElement.Parent.ToString());
             }
