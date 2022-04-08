@@ -333,6 +333,16 @@ namespace App_Integration
             ws.Columns(colLetters).AdjustToContents();
         }
 
+        public void AdjustAllColumnsWidth(string workbookName, string sheetName)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+            ws.Columns().AdjustToContents();
+            wb.Save();
+        }
+
         public void AdjustRowHeight(string workbookName, string sheetName, string rowNumbers)
         {
             if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
@@ -443,6 +453,107 @@ namespace App_Integration
             }
 
             return dataTable;
+        }
+
+        public void ProtectWorksheet(string workbookName, string sheetName, string sheetPassword)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            ws.Protect(sheetPassword);
+            wb.Save();
+        }
+
+        public void FormatBordersToThin(string workbookName, string sheetName, string cellsRange)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            if (String.IsNullOrEmpty(cellsRange))
+            {
+                ws.RangeUsed().Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                ws.RangeUsed().Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+            }
+            else
+            {
+                ws.Ranges(cellsRange).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
+                ws.Ranges(cellsRange).Style.Border.InsideBorder = XLBorderStyleValues.Thin;
+            }
+
+            wb.Save();
+        }
+
+        public void FormatNumberStyle(string workbookName, string sheetName, string cellsRange, string numberFormat)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(cellsRange)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            ws.Ranges(cellsRange).Style.NumberFormat.Format = numberFormat;
+
+            wb.Save();
+        }
+
+        public void SetRangeBackgroundColorToNoFill(string workbookName, string sheetName, string cellsRange)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            if (String.IsNullOrEmpty(cellsRange))
+            {
+                ws.RangeUsed().Style.Fill.PatternType = XLFillPatternValues.None;
+            }
+            else
+            {
+                ws.Ranges(cellsRange).Style.Fill.PatternType = XLFillPatternValues.None;
+            }
+
+            wb.Save();
+        }
+
+        public void ShowGridLines(string workbookName, string sheetName, bool showGridLines)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            ws.ShowGridLines = showGridLines;
+
+            wb.Save();
+        }
+
+        public void AlignRangeContentToLeft(string workbookName, string sheetName, string cellsRange)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            if (String.IsNullOrEmpty(cellsRange))
+            {
+                ws.RangeUsed().Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            }
+            else
+            {
+                ws.Ranges(cellsRange).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+            }
+
+            wb.Save();
         }
     }
 }

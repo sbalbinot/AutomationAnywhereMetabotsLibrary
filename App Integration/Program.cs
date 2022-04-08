@@ -10,7 +10,15 @@ namespace App_Integration
     {
         public static void Main()
         {
-            //Excel ex = new Excel();
+            //excel ex = new excel();
+            //ex.formatborderstothin("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", "a1:c3");
+
+            //ex.formatnumberstyle("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", "a1:c4", "00000000");
+
+            //ex.setrangebackgroundcolortonofill("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", "a1:c4");
+
+            //ex.showgridlines("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", true);
+            //ex.alignrangecontenttoleft("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", "a1:c4");
 
             //string result = ex.FindRowInARangeByTwoExactValues(@"C:\Users\steph\Downloads\10 - Outubro 2021 - CONTROLE DE AGENDA E TX DE OCUPAÇAO.xlsx", "1", "B2:C78", "Unifacil Cachoeirinha", "Medico Ginecologista e Obstetra");
             //string result = ex.GetCellValue(@"C:\Users\steph\Downloads\10 - Outubro 2021 - CONTROLE DE AGENDA E TX DE OCUPAÇAO.xlsx", "1", "H12");
