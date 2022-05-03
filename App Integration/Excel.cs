@@ -144,7 +144,7 @@ namespace App_Integration
             string result = "";
 
             IXLRange rangeFound = ws.Range(range);
-            
+
             IXLCells cellsFound = rangeFound.CellsUsed(cell => cell.GetValue<string>() == value);
 
             result = String.Join(";", from a in cellsFound.ToArray() select a.Address.ToString());
@@ -217,7 +217,7 @@ namespace App_Integration
             var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
             var ws = wb.Worksheet(sheetName);
 
-            DataTable dataTable = convertStringToDataTable(data, columnDelimiter, rowDelimiter);
+            DataTable dataTable = ConvertStringToDataTable(data, columnDelimiter, rowDelimiter);
 
             if (addHeaders)
                 ws.Cell(startingCell).InsertTable(dataTable, false);
@@ -234,22 +234,22 @@ namespace App_Integration
             var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
             var ws = wb.Worksheet(sheetName);
 
-            DataTable dataTable = convertStringToDataTable(data, columnDelimiter, rowDelimiter);
+            DataTable dataTable = ConvertStringToDataTable(data, columnDelimiter, rowDelimiter);
 
             ws.Cell(ws.LastRowUsed().RowNumber() + 1, 1).InsertData(dataTable);
 
             wb.Save();
         }
 
-//        public string ReadRange(string workbookName, string sheetName, string range, string data, string columnDelimiter, string rowDelimiter)
-//        {
-//            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
-//        
-//            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
-//            var ws = wb.Worksheet(sheetName);
-//
-//            return null;
-//        }
+        //        public string ReadRange(string workbookName, string sheetName, string range, string data, string columnDelimiter, string rowDelimiter)
+        //        {
+        //            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+        //        
+        //            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+        //            var ws = wb.Worksheet(sheetName);
+        //
+        //            return null;
+        //        }
 
         public void AddRow(string workbookName, string sheetName, int row, int rowsToInsert, bool insertBelow)
         {
@@ -424,7 +424,7 @@ namespace App_Integration
             wb.Save();
         }
 
-        private DataTable convertStringToDataTable(string data, string columnDelimiter, string rowDelimiter)
+        private DataTable ConvertStringToDataTable(string data, string columnDelimiter, string rowDelimiter)
         {
             DataTable dataTable = new DataTable();
             bool columnsAdded = false;
@@ -439,7 +439,8 @@ namespace App_Integration
                     {
                         DataColumn dataColumn = new DataColumn(cell);
                         dataTable.Columns.Add(dataColumn);
-                    } else
+                    }
+                    else
                     {
                         dataRow[columnCount] = cell;
                     }
@@ -552,6 +553,20 @@ namespace App_Integration
             {
                 ws.Ranges(cellsRange).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
             }
+
+            wb.Save();
+        }
+
+        public void ProtectWorksheetWithAutoFilterAllowed(string workbookName, string sheetName, string sheetPassword)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            var protection = ws.Protect(sheetPassword);
+            protection.AllowedElements = XLSheetProtectionElements.AutoFilter;
 
             wb.Save();
         }
