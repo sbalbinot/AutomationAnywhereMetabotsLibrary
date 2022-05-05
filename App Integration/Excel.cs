@@ -570,5 +570,25 @@ namespace App_Integration
 
             wb.Save();
         }
+
+        public void ProtectWorksheetSpsSuporteNegocioOpme(string workbookName, string sheetName, string sheetPassword)
+        {
+            if (String.IsNullOrEmpty(workbookName)) throw new ArgumentException(nameof(workbookName) + " cannot be null or empty.");
+            if (String.IsNullOrEmpty(sheetName)) throw new ArgumentException(nameof(sheetName) + " cannot be null or empty.");
+
+            var wb = new XLWorkbook(workbookName, XLEventTracking.Disabled);
+            var ws = wb.Worksheet(sheetName);
+
+            var protection = ws.Protect(sheetPassword);
+            protection.AllowedElements = XLSheetProtectionElements.SelectLockedCells | 
+                                         XLSheetProtectionElements.SelectUnlockedCells |
+                                         XLSheetProtectionElements.FormatColumns |
+                                         XLSheetProtectionElements.Sort |
+                                         XLSheetProtectionElements.AutoFilter |
+                                         XLSheetProtectionElements.EditScenarios;
+
+            wb.Save();
+        }
+
     }
 }

@@ -12,8 +12,7 @@ namespace App_Integration
         {
             //Excel ex = new Excel();
 
-            //ex.ProtectWorksheetWithAutoFilterAllowed("c:\\users\\danie\\desktop\\TESTE_EXCEL\\Material Alto Custo Intranet _DATA_.xlsx", "Material Alto Custo", "123");
-
+            //ex.ProtectWorksheetSpsSuporteNegocioOpme("c:\\users\\danie\\desktop\\TESTE_EXCEL\\Material Alto Custo Intranet _DATA_.xlsx", "Material Alto Custo", "123");
             //ex.formatborderstothin("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", "a1:c3");
 
             //ex.formatnumberstyle("c:\\users\\danie\\desktop\\new folder\\testeexcel\\teste.xlsx", "plan1", "a1:c4", "00000000");
