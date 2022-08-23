@@ -1,4 +1,6 @@
-﻿using iTextSharp.text;
+﻿using Spire.Doc;
+using Spire.Doc.Documents;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using System.Linq;
@@ -52,13 +54,14 @@ namespace System
             if (extension == null)
             {
                 file = (from f in directory.GetFiles()
-                                 orderby f.LastWriteTime descending
-                                 select f).First();
-            } else
+                        orderby f.LastWriteTime descending
+                        select f).First();
+            }
+            else
             {
                 file = (from f in directory.GetFiles("*." + extension.ToLower())
-                                 orderby f.LastWriteTime descending
-                                 select f).First();
+                        orderby f.LastWriteTime descending
+                        select f).First();
             }
 
             return file.FullName;
@@ -105,14 +108,14 @@ namespace System
             if (extension == null)
             {
                 files = String.Join("|", (from f in directory.GetFiles()
-                        orderby f.LastWriteTime descending
-                        select f.FullName).Take(numberOfFiles).ToArray());
+                                          orderby f.LastWriteTime descending
+                                          select f.FullName).Take(numberOfFiles).ToArray());
             }
             else
             {
                 files = String.Join("|", (from f in directory.GetFiles("*." + extension.ToLower())
-                        orderby f.LastWriteTime descending
-                        select f.FullName).Take(numberOfFiles).ToArray());
+                                          orderby f.LastWriteTime descending
+                                          select f.FullName).Take(numberOfFiles).ToArray());
             }
 
             return files;
@@ -184,7 +187,8 @@ namespace System
             if (files.Length == 0)
             {
                 throw new Exception("Não foram encontrados arquivos entre as datas fornecidas.");
-            } else if (files.Length > 1)
+            }
+            else if (files.Length > 1)
             {
                 throw new Exception("Mais um de arquivo foi encontrado com base nas datas fornecidas.");
             }
@@ -282,7 +286,7 @@ namespace System
 
             //Create a New instance on Document Class
 
-            Document doc = new Document();
+            iTextSharp.text.Document doc = new iTextSharp.text.Document();
 
             //Create a New instance of PDFWriter Class for Output File
 
@@ -301,7 +305,7 @@ namespace System
 
             while ((ln = rdr.ReadLine()) != null)
             {
-                Paragraph paragraph = new Paragraph();
+                iTextSharp.text.Paragraph paragraph = new iTextSharp.text.Paragraph();
 
                 if (lastLn == null || ln.Contains("=") || (!lastLn.All(char.IsWhiteSpace) && !ln.Contains(":")))
                     paragraph.Alignment = 1;
@@ -313,13 +317,20 @@ namespace System
                 doc.Add(paragraph);
 
                 lastLn = ln;
-            } 
+            }
 
             //Close the Document
 
             doc.Close();
 
             return fileNamePdf;
+        }
+
+        public void ConvertDocToPdf(string docFileName, string pdfFilename)
+        {
+            Spire.Doc.Document document = new Spire.Doc.Document();
+            document.LoadFromFile(docFileName);
+            document.SaveToFile(pdfFilename, FileFormat.PDF);
         }
 
         public string DownloadFile(string url, string saveFileAs)
